@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swapify Premium Membership</title>
+  <style>
+    :root {
+      --bg: #070810;
+      --surface: rgba(20, 16, 22, 0.96);
+      --gold: #ffd700;
+      --text: #f5f0d6;
+      --muted: #b8b0a0;
+      --accent: #f3c33b;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(255, 215, 0, 0.15), transparent 20%),
+                  linear-gradient(180deg, #090a11 0%, #05060b 100%);
+      color: var(--text);
+      padding: 36px;
+    }
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      background: rgba(14, 12, 18, 0.9);
+      border: 1px solid rgba(255, 215, 0, 0.16);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: 0 30px 90px rgba(255, 215, 0, 0.14);
+    }
+    .hero {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 4vw, 3.6rem);
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    .hero p {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255, 215, 0, 0.14);
+      color: #fff;
+      font-weight: 700;
+      border: 1px solid rgba(255, 215, 0, 0.24);
+    }
+    .section {
+      margin-top: 32px;
+      display: grid;
+      gap: 18px;
+    }
+    .section h2 {
+      font-size: 1.6rem;
+      color: var(--accent);
+    }
+    .section p,
+    .section ul {
+      color: var(--text);
+      line-height: 1.75;
+    }
+    .section ul {
+      padding-left: 20px;
+      list-style: disc;
+    }
+    .section ul li {
+      margin-bottom: 10px;
+    }
+    .price-card {
+      display: grid;
+      gap: 12px;
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.16);
+      color: #fff;
+    }
+    .price-card strong {
+      font-size: 2.4rem;
+      color: var(--gold);
+      display: block;
+    }
+    .note {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+    .back-link {
+      display: inline-flex;
+      margin-top: 24px;
+      padding: 14px 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 255, 255, 0.08));
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid rgba(255, 215, 0, 0.18);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <span class="badge">Premium Tier</span>
+      <h1>Swapify Premium Membership</h1>
+      <p>Upgrade your Swapify account to unlock elite trading access and exclusive luxury item exchanges. Premium members can list and trade high-value goods, services, and experiences not available to standard users.</p>
+    </div>
+
+    <div class="price-card">
+      <strong>Rs. 99 / Mn</strong>
+      <p>Enjoy premium membership for a monthly fee and access the most valuable Swapify trades.</p>
+    </div>
+
+    <div class="section">
+      <h2>Allowed premium trades</h2>
+      <ul>
+        <li>House, yacht, jet, plane, boat, submarine</li>
+        <li>Diamonds, gold, jewellery, masterpiece art</li>
+        <li>Bunkers, islands, castles, services, and more luxury exchanges</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Membership benefits</h2>
+      <ul>
+        <li>Access to high-value premium listings</li>
+        <li>Priority visibility for your expensive trades</li>
+        <li>Smart AI that publishes your trades and helps judge trade quality</li>
+        <li>Trade history access and secure photo storage</li>
+        <li>Enhanced trust from premium-only offers</li>
+        <li>Ability to trade items beyond standard limits</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Choose your plan</h2>
+      <ul>
+        <li>Monthly Premium — Rs. 99 / month</li>
+        <li>Annual Premium — Rs. 199 / year with the same features and 48% savings</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Premium Comparison</h2>
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Non-Premium</th><th>Premium</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Allowed High-Value Listings</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Priority Listing Visibility</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Premium Badge</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Smart AI Trade Publishing</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Trade Quality Evaluation</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Trade History Access</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Secure Photo Storage</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Admin-like Protections</td><td>No</td><td>Limited</td></tr>
+          <tr><td>Access to Luxury Exchanges</td><td>No</td><td>Yes</td></tr>
+          <tr><td>Posting Limit for Expensive Items</td><td>Blocked</td><td>Allowed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Standard user limits</h2>
+      <p>Without premium membership, you cannot trade high-value items up to or including a car. Standard accounts are limited to everyday goods and cannot list luxury assets such as houses, yachts, jets, boats, diamonds, gold, jewellery, submarines, bunkers, islands, castles, or masterpiece art.</p>
+    </div>
+
+    <div class="section">
+      <h2>Rating critics</h2>
+      <ul>
+        <li>1 star = Decent</li>
+        <li>2 stars = Bad</li>
+        <li>3 stars = Very Bad</li>
+      </ul>
+      <p class="note">A 3-star rating generates a notice from the website so the member can improve behavior and stay in good standing.</p>
+    </div>
+
+    <a class="back-link" href="index.html" target="_self">Return to Swapify</a>
+    <a class="back-link" href="terms-and-conditions.html" target="_blank" rel="noopener noreferrer" style="margin-left: 12px;">Read Terms & Conditions</a>
+  </div>
+</body>
+</html>

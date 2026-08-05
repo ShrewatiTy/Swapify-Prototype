@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Swapify Admin</title>
+  <style>
+    body{font-family:Inter, system-ui, sans-serif; background:#071022;color:#eef4ff;padding:24px}
+    .container{max-width:980px;margin:0 auto}
+    h1{color:#ffd700}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .controls button{padding:10px 14px;border-radius:10px;border:none;cursor:pointer}
+    .notice-area, .history{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:16px;border-radius:12px}
+    .notice-form{display:grid;gap:8px}
+    .notice-form input, .notice-form textarea, .notice-form select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    table th,table td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.04);text-align:left}
+    .notice-item{padding:10px;border-radius:8px;margin-bottom:8px;background:rgba(255,255,255,0.02)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Swapify — Admin Center</h1>
+    <p>Manage notices, view history, and access protected admin actions.</p>
+
+    <div class="controls">
+      <button id="openMain">Open Main App</button>
+      <button id="clearHistory">Clear Notice History</button>
+    </div>
+
+    <section class="notice-area">
+      <h2>Send Notice</h2>
+      <form id="noticeForm" class="notice-form">
+        <select id="noticeTarget">
+          <option value="all">All users</option>
+        </select>
+        <select id="noticeType">
+          <option value="info">Info</option>
+          <option value="good">Good behavior</option>
+          <option value="warning">Warning</option>
+        </select>
+        <textarea id="noticeText" rows="4" placeholder="Enter the notice message"></textarea>
+        <div style="display:flex;gap:8px"><button type="button" id="sendNotice">Send Notice</button><button type="button" id="saveDraft">Save Draft</button></div>
+      </form>
+    </section>
+
+    <section style="margin-top:18px">
+      <h2>Notice History</h2>
+      <div id="noticeHistory" class="history"></div>
+    </section>
+
+    <section style="margin-top:18px">
+      <h2>Admin Actions</h2>
+      <div class="controls">
+        <button id="openUsers">Open Users List</button>
+        <button id="exportNotices">Export Notices (JSON)</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const API_BASE = location.origin + (location.port ? '' : ''); // server assumed at same origin; dev: http://localhost:3000 when served
+
+    function getCurrentUserLocal(){
+      try{const s=localStorage.getItem('swapify-current-user');return s?JSON.parse(s):null}catch(e){return null}
+    }
+
+    async function getNotices(){
+      try{
+        const res = await fetch('/api/notices');
+        if(res.ok){ return await res.json(); }
+      }catch(e){ /* server not available, fallback */ }
+      const s=localStorage.getItem('swapify-notices');return s?JSON.parse(s):[]
+    }
+
+    async function saveNotices(list){
+      try{
+        const res = await fetch('/api/notices',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(list[list.length-1])});
+        if(res.ok){ renderHistory(); return; }
+      }catch(e){ /* ignore */ }
+      localStorage.setItem('swapify-notices',JSON.stringify(list));
+      renderHistory();
+    }
+    function renderHistory(){const out=document.getElementById('noticeHistory');const list=getNotices();if(!list.length){out.innerHTML='<div class="notice-item">No notices yet.</div>';return}out.innerHTML='';list.slice().reverse().forEach(n=>{const el=document.createElement('div');el.className='notice-item';el.innerHTML=`<strong>${n.type.toUpperCase()}</strong> • <em>${n.target}</em><div style="margin-top:6px">${n.text}</div><div style="color:var(--muted);font-size:0.9rem;margin-top:6px">${new Date(n.createdAt).toLocaleString()}</div>`;out.appendChild(el)})}
+
+    // Prevent admins viewing this page directly unless logged in as admin
+    (function guardAdmin(){
+      const cur = getCurrentUserLocal();
+      if(!cur || !cur.admin){
+        alert('Admin center is for admins only. Please log in with an admin account.');
+        window.location.href = 'index.html';
+      }
+    })();
+
+    document.getElementById('sendNotice').addEventListener('click',async ()=>{const target=document.getElementById('noticeTarget').value;const type=document.getElementById('noticeType').value;const text=document.getElementById('noticeText').value.trim();if(!text){alert('Enter a message');return}const cur=getCurrentUserLocal();if(cur && target && cur.username && target.trim().toLowerCase()===cur.username.trim().toLowerCase()){alert('Admins cannot send notices to themselves.');return}if(!confirm(`Send this ${type} notice to ${target === 'all' ? 'all users' : target + ' ?'}`)) return;const notices=await getNotices();const notice={target,type,text,createdAt:new Date().toISOString()};notices.push(notice);await saveNotices(notices);alert('Notice saved and visible in history.');document.getElementById('noticeText').value=''});
+    document.getElementById('saveDraft').addEventListener('click',async ()=>{const text=document.getElementById('noticeText').value.trim();if(!text){alert('Enter draft text');return}if(!confirm('Save this notice as draft?')) return;const notices=await getNotices();const draft={target:'draft',type:'draft',text,createdAt:new Date().toISOString()};notices.push(draft);await saveNotices(notices);alert('Draft saved.');document.getElementById('noticeText').value=''});
+    document.getElementById('clearHistory').addEventListener('click',async ()=>{if(!confirm('Clear all saved notices?'))return;try{const res=await fetch('/api/notices',{method:'DELETE'});if(res.ok){localStorage.removeItem('swapify-notices');renderHistory();alert('Cleared history on server and local');return}}catch(e){}localStorage.removeItem('swapify-notices');renderHistory();alert('Cleared history locally')});
+    document.getElementById('openMain').addEventListener('click',()=>{window.open('index.html','_self')});
+    document.getElementById('openUsers').addEventListener('click',()=>{window.open('index.html#adminPanel','_blank')});
+    document.getElementById('exportNotices').addEventListener('click',()=>{const data=JSON.stringify(getNotices(),null,2);const blob=new Blob([data],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='swapify-notices.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)});
+    // populate targets with accounts (disable current admin to prevent self-notices)
+    function populateTargets(){
+      const sel=document.getElementById('noticeTarget');
+      sel.innerHTML='<option value="all">All users</option>';
+      const accs=localStorage.getItem('swapify-accounts');
+      if(!accs) return;
+      const current = getCurrentUserLocal();
+      JSON.parse(accs).forEach(a=>{
+        const opt=document.createElement('option');
+        opt.value=a.username;
+        opt.textContent=a.username + (current && current.username && a.username.trim().toLowerCase()===current.username.trim().toLowerCase() ? ' (you)' : '');
+        if(current && current.username && a.username.trim().toLowerCase()===current.username.trim().toLowerCase()){
+          opt.disabled = true;
+        }
+        sel.appendChild(opt);
+      })
+    }
+    populateTargets();renderHistory();
+  </script>
+</body>
+</html>
