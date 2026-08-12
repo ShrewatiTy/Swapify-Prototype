@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Post - Swapify</title>
+  <style>
+    body{font-family: Arial, sans-serif; padding:18px; background:#f7f9fb}
+    .card{max-width:860px;margin:0 auto;background:white;padding:18px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,0.06)}
+    img{max-width:100%;height:auto}
+    #messages{border:1px solid #eee;padding:12px;height:260px;overflow:auto;margin-bottom:8px}
+    .msg{padding:6px 8px;border-bottom:1px solid #f3f4f6}
+    .chat-input{display:flex;gap:8px}
+    .chat-input input{flex:1;padding:10px;border:1px solid #ddd;border-radius:6px}
+    .chat-input button{padding:10px 12px;border-radius:6px;border:0;background:#2563eb;color:white}
+  </style>
+</head>
+<body>
+  <div class="card" id="postCard">
+    <h1 id="postTitle">Loading...</h1>
+    <p id="postDesc"></p>
+    <div id="attachments"></div>
+    <hr>
+    <h3>Chat with Me If You Want to Trade.</h3>
+    <div id="messages"></div>
+    <div id="chatControls">
+      <div style="margin-bottom:8px">Name: <input id="chatName" placeholder="Your name (optional)" style="padding:6px;border:1px solid #ddd;border-radius:6px;width:220px"></div>
+      <div class="chat-input">
+        <input id="messageInput" placeholder="Write a message...">
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/post_chat.js"></script>
+  <script>
+    // initialize the script with post id from query param
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const postId = params.get('id') || '1';
+      window.SWAPIFY_POST_ID = postId;
+    })();
+  </script>
+</body>
+</html>
