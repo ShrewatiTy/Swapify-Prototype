@@ -1,2 +1,8 @@
-Flask>=2.0.0
-flask-cors>=3.0.0
+flask
+flask_sqlalchemy
+python-dotenv
+werkzeug
+google-auth
+google-auth-oauthlib
+google-api-python-client
+google-auth-httplib2
